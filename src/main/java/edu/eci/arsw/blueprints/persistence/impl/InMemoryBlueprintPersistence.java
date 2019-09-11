@@ -15,6 +15,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.springframework.stereotype.Component;
 
 /**
@@ -24,7 +26,7 @@ import org.springframework.stereotype.Component;
 @Component("bpp")
 public class InMemoryBlueprintPersistence implements BlueprintsPersistence {
 
-	private final Map<Tuple<String, String>, Blueprint> blueprints = new HashMap<>();
+	private final Map<Tuple<String, String>, Blueprint> blueprints = new ConcurrentHashMap<>();
 
 	public InMemoryBlueprintPersistence() {
 		// load stub data
@@ -81,6 +83,7 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence {
 	public void updateBlueprint(Blueprint bp) throws BlueprintNotFoundException {
 		if(!blueprints.containsKey(new Tuple<>(bp.getAuthor(), bp.getName())))
 			throw new BlueprintNotFoundException("the given blueprint doesn't exist");
+		
 		blueprints.replace(new Tuple<String, String>(bp.getAuthor(), bp.getName()), bp);
 		
 	}
