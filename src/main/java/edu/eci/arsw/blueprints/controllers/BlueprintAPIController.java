@@ -14,11 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.eci.arsw.blueprints.model.Blueprint;
 import edu.eci.arsw.blueprints.persistence.BlueprintNotFoundException;
+import edu.eci.arsw.blueprints.persistence.BlueprintPersistenceException;
 import edu.eci.arsw.blueprints.services.BlueprintsServices;
 
 /**
@@ -58,9 +61,34 @@ public class BlueprintAPIController {
 			return new ResponseEntity<>(bs.getBlueprint(author, bprintname),HttpStatus.ACCEPTED);
 		} catch (BlueprintNotFoundException e) {
 			Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE,null,e);
-			return new ResponseEntity<>("could not find blueprint "+bprintname+" by "+author,HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("Could not find blueprint "+bprintname+" by "+author,HttpStatus.NOT_FOUND);
 		}
 		
 	}
+	
+	@RequestMapping(value="/blueprints/{author}/{bpName}",method=RequestMethod.POST)
+	public ResponseEntity<?> postBlueprintHandler(@RequestBody Blueprint blueprint){
+			try {
+				bs.saveBlueprint(blueprint);
+				return new ResponseEntity<>(HttpStatus.CREATED);
+			} catch (BlueprintPersistenceException e) {
+				Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE,null,e);
+				return new ResponseEntity<>("Could not create blueprint",HttpStatus.FORBIDDEN);
+			}
+		
+	}
+	
+	@RequestMapping(value="/blueprints/{author}/{bpName}",method=RequestMethod.PUT)
+	public ResponseEntity<?> putBlueprintHandler(@RequestBody Blueprint blueprint){
+		
+		try {
+			bs.updateBlueprint(blueprint);
+			return new ResponseEntity<>(HttpStatus.CREATED);
+		} catch (BlueprintNotFoundException e) {
+			Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE,null,e);
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
+	}
+	
 }
 

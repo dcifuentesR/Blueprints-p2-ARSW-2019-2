@@ -125,7 +125,7 @@ public class InMemoryPersistenceTest {
         bprints.add(bp6);
         
         try {
-        	ibpp.getBlueprintsByAuthor("arthur");
+        	ibpp.getBlueprintsByAuthor("THIS AUTHOR DOESN'T EXIST");
         	fail("An exception was expected because the given author doesnt exist");
         }catch (BlueprintNotFoundException e) {
 			// TODO: handle exception

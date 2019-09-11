@@ -23,6 +23,12 @@ public interface BlueprintsPersistence {
     public void saveBlueprint(Blueprint bp) throws BlueprintPersistenceException;
     
     /**
+     * @param bp the updated version of the blueprint
+     * @throws BlueprintNotFoundException if there is no such blueprint
+     */
+    public void updateBlueprint(Blueprint bp) throws BlueprintNotFoundException;
+    
+    /**
      * 
      * @param author blueprint's author
      * @param bprintname blueprint's author

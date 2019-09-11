@@ -35,8 +35,12 @@ public class BlueprintsServices {
     	return bpf.filter(bp);
     }
     
-    public void saveBlueprint(String author,String name) throws BlueprintPersistenceException {
-    	bpp.saveBlueprint(new Blueprint(author,name));
+    public void saveBlueprint(Blueprint blueprint) throws BlueprintPersistenceException {
+    	bpp.saveBlueprint(blueprint);
+    }
+    
+    public void updateBlueprint(Blueprint blueprint) throws BlueprintNotFoundException {
+    	bpp.updateBlueprint(blueprint);
     }
     
     public void addPoint(Blueprint bp, int x,int y) {
